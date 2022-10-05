@@ -13,7 +13,8 @@ export class PostsController {
   };
 
   findOne = async (req: Request, res: Response) => {
-    const postRes = await this.repository.findAll();
+    const { uuid } = req.params;
+    const postRes = await this.repository.findOne(uuid);
     return res.json(postRes);
   };
 

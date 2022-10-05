@@ -10,7 +10,6 @@ export interface IPost extends Omit<Prisma.PostCreateInput, "author"> {
 const select: Prisma.PostSelect = {
   uuid: true,
   title: true,
-  content: true,
   createdAt: true,
   updatedAt: true,
   published: true,
@@ -27,19 +26,37 @@ export class PostsRepository {
   constructor(private db: PrismaClient) {}
   async findAll() {
     const posts = await this.db.post.findMany({
-      select,
+      select: { ...select, _count: true },
       where: {
         deleted: null,
       },
     });
 
-    const postsRes = posts.map(excludeDefaults);
-    return postsRes;
+    return posts;
   }
 
   async findOne(uuid: string) {
     const postDB = await this.db.post.findFirst({
-      select,
+      select: {
+        ...select,
+        content: true,
+        comments: {
+          select: {
+            uuid: false,
+            content: true,
+            author: {
+              select: {
+                uuid: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+          where: {
+            deleted: null,
+          },
+        },
+      },
       where: {
         uuid,
         deleted: null,
