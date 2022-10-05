@@ -12,7 +12,8 @@ Projeto simples de uma api para um blog para treinar o uso:
 - Banco de dados
 
 ```sh
-$ docker-compose up
+$ docker-compose up -d
+$ npx prisma migrate dev
 ```
 
 - Aplicacao
@@ -28,7 +29,8 @@ Foi feita a implementação de testes `e2e` mas estão imcompletos e provevelmen
 - Banco de dados
 
 ```sh
-$ docker-compose up
+$ docker-compose up -d
+$ npx prisma migrate dev
 ```
 
 - Aplicação
