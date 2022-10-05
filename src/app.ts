@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import { commentsRouter } from "./modules/comments/comments.routes";
 import { postsRouter } from "./modules/posts/posts.routes";
+import { tagsRouter } from "./modules/tags/tags.routes";
 import { usersRouter } from "./modules/users/users.routes";
 
 const app = express();
@@ -18,5 +19,6 @@ app.get("/", (_, res) => {
 app.use("/v1/users", usersRouter);
 app.use("/v1/posts", postsRouter);
 app.use("/v1/comments", commentsRouter);
+app.use("/v1/tags", tagsRouter);
 
 export default app;

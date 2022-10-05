@@ -10,6 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tag {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
+  content   String    @unique
+  posts     Post[]
+  // 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   DateTime?
+}
+
 model Comment {
   id        Int       @id @default(autoincrement())
   uuid      String    @unique @default(uuid())
@@ -37,6 +48,7 @@ model Post {
   updatedAt DateTime  @updatedAt
   deleted   DateTime?
   comments  Comment[]
+  tags      Tag[]
 }
 
 model Profile {
