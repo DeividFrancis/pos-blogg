@@ -60,7 +60,7 @@ model Post {
   deleted   DateTime?
   comments  Comment[]
   tags      Tag[]
-  catetorys Category[]
+  categorys Category[]
 }
 
 model Profile {

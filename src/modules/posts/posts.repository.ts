@@ -1,11 +1,13 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { excludeDefaults } from "../../utils/db";
 
-export interface IPost extends Omit<Prisma.PostCreateInput, "author" | "tags"> {
+export interface IPost
+  extends Omit<Prisma.PostCreateInput, "author" | "tags" | "categorys"> {
   author: {
     uuid: string;
   };
   tags?: string[];
+  categorys?: string[];
 }
 
 const select: Prisma.PostSelect = {
@@ -24,6 +26,11 @@ const select: Prisma.PostSelect = {
   tags: {
     select: {
       content: true,
+    },
+  },
+  categorys: {
+    select: {
+      name: true,
     },
   },
 };
@@ -80,6 +87,18 @@ export class PostsRepository {
         author: {
           connect: { uuid: post.author.uuid },
         },
+        tags: post.tags && {
+          connectOrCreate: post.tags.map((tag) => ({
+            where: { content: tag },
+            create: { content: tag },
+          })),
+        },
+        categorys: post.categorys && {
+          connectOrCreate: post.categorys.map((c) => ({
+            where: { name: c },
+            create: { name: c },
+          })),
+        },
       },
     });
 
@@ -101,6 +120,12 @@ export class PostsRepository {
           connectOrCreate: post.tags.map((tag) => ({
             where: { content: tag },
             create: { content: tag },
+          })),
+        },
+        categorys: post.categorys && {
+          connectOrCreate: post.categorys.map((c) => ({
+            where: { name: c },
+            create: { name: c },
           })),
         },
       },
